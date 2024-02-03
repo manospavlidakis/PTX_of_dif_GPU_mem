@@ -1,0 +1,38 @@
+
+
+
+
+
+
+
+
+.version 7.6
+.target sm_52
+.address_size 64
+
+
+
+.visible .entry _Z6kernelyPi(
+.param .u64 _Z6kernelyPi_param_0,
+.param .u64 _Z6kernelyPi_param_1
+)
+{
+.reg .f32 %f<3>;
+.reg .b32 %r<8>;
+.reg .b64 %rd<4>;
+
+
+ld.param.u64 %rd1, [_Z6kernelyPi_param_0];
+ld.param.u64 %rd2, [_Z6kernelyPi_param_1];
+cvta.to.global.u64 %rd3, %rd2;
+mov.u32 %r1, %tid.x;
+mov.u32 %r2, %tid.y;
+cvt.rn.f32.s32 %f1, %r1;
+cvt.rn.f32.s32 %f2, %r2;
+tex.2d.v4.u32.f32 {%r3, %r4, %r5, %r6}, [%rd1, {%f1, %f2}];
+and.b32 %r7, %r3, 255;
+st.global.u32 [%rd3], %r7;
+ret;
+
+}
+
